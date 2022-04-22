@@ -1,19 +1,16 @@
 ```
 ///////////////////////////////////////////////////////////////////////////////
 
-Display library for EASTRISING 1280x400 TFT LCD (model ER-TFTM0784-1)
-
-This one is different from its peers, which usually have just a RA8876. 
-It adds An SSD2828 controller which requires its own initialization.
-
-This is a sloppy port to Arduino of demo code originally written by 
-JAVEN LIU for a C8051 microcontroller.
+Display library for EASTRISING 1280x400 TFT LCD (model ER-TFTM0784-1) 
 
 Product URL:
 
 https://www.buydisplay.com/spi-1280x400-7-84-ips-tft-lcd-module-with-ra8876-capacitive-touch-panel
 
 ///////////////////////////////////////////////////////////////////////////////
+
+Original library: https://github.com/caiannello/ER-TFTM0784-1
+Edited by C.Feddema aka sixeight7.
 
 -------------------------------------------------------------------------------
 The module has three main controllers on it:
@@ -128,6 +125,9 @@ HELP WANTED
 
 There is much room for improvement and optimization here, so please
 lend a hand.
+
+Sixeight7: Made it into a proper library. Improved speed of writing pictures. Changes in configuration of 2626 file with aid of Buydisplay.
+Also use the goodix library for the touch screen.
 
 ---
 ```
