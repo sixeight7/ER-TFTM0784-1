@@ -1339,6 +1339,7 @@ public:
     
     void Show_String(const char *str);
     void Show_picture(uint32_t numbers, const uint16_t *datap);
+    void Read_picture(uint32_t numbers, uint8_t *datap);
     void Show_picture(uint32_t numbers, const uint8_t *datap);
     void LCD_Clear(uint16_t Color);
     void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos);

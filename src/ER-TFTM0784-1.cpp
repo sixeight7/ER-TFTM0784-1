@@ -16,6 +16,7 @@
 // Ported to Arduino by Craig Iannello  2020-04-14
 //
 ///////////////////////////////////////////////////////////////////////////////
+#define USE_NEW_INITIAL_DATA
 
 #include "ER-TFTM0784-1.h"
 
@@ -353,7 +354,7 @@ void ER_TFTM0784::LCD_DataWrite16(uint16_t data)
         startSend();
         SPI.transfer(RA8876_SPI_DATAWRITE);
         SPI.transfer(data & 0xFF); // LSB first!!!
-        SPI.transfer(data>>8);
+        SPI.transfer(data >> 8);
         //SPI.transfer16(data);
         endSend();
     } else
@@ -612,11 +613,13 @@ void ER_TFTM0784::RA8876_initial()
     //Serial.println("  TFT_24bit");
     //**[01h]**//
     TFT_24bit();
+    Enable_SFlash_SPI();
     //Serial.println("  Host_bus_16bit");
     Host_Bus_16bit();
-    //**[02h]**//
-    //Serial.println("  RGB_16bpp");
     RGB_16b_16bpp();
+    
+    //Host_Bus_8bit();
+    //RGB_8b_16bpp();
     //RGB_16b_24bpp_mode1();
     //  MemWrite_Left_Right_Top_Down();
     //  MemWrite_Right_Left_Top_Down();
@@ -631,8 +634,8 @@ void ER_TFTM0784::RA8876_initial()
     //Serial.println("  Font");
     
     Font_90_degree();
-    VSCAN_B_to_T();
     
+    VSCAN_B_to_T();
     //  VSCAN_T_to_B();
     
     
@@ -676,7 +679,86 @@ void ER_TFTM0784::RA8876_initial()
 //==============================================================================
 void ER_TFTM0784::RA8876_PLL_Initial()
 {
-    ;
+#ifdef USE_NEW_INITIAL_DATA
+    if(SCAN_FREQ>=63)        //&&(SCAN_FREQ<=100))
+    {
+     LCD_RegisterWrite(0x05,0x04);    //PLL Divided by 4
+     LCD_RegisterWrite(0x06,(SCAN_FREQ*4/OSC_FREQ)-1);
+    }
+    if((SCAN_FREQ>=32)&&(SCAN_FREQ<=62))
+    {
+     LCD_RegisterWrite(0x05,0x06);    //PLL Divided by 8
+     LCD_RegisterWrite(0x06,(SCAN_FREQ*8/OSC_FREQ)-1);
+    }
+    if((SCAN_FREQ>=16)&&(SCAN_FREQ<=31))
+    {
+     LCD_RegisterWrite(0x05,0x16);    //PLL Divided by 16
+     LCD_RegisterWrite(0x06,(SCAN_FREQ*16/OSC_FREQ)-1);
+    }
+    if((SCAN_FREQ>=8)&&(SCAN_FREQ<=15))
+    {
+     LCD_RegisterWrite(0x05,0x26);    //PLL Divided by 32
+     LCD_RegisterWrite(0x06,(SCAN_FREQ*32/OSC_FREQ)-1);
+    }
+    if((SCAN_FREQ>0)&&(SCAN_FREQ<=7))
+    {
+     LCD_RegisterWrite(0x05,0x36);    //PLL Divided by 64
+     LCD_RegisterWrite(0x06,(SCAN_FREQ*64/OSC_FREQ)-1);
+    }
+   
+    
+    // Set SDRAM clock
+    if(DRAM_FREQ>=125)        //&&(DRAM_FREQ<=166))
+    {
+     LCD_RegisterWrite(0x07,0x02);    //PLL Divided by 2
+     LCD_RegisterWrite(0x08,(DRAM_FREQ*2/OSC_FREQ)-1);
+    }
+    if((DRAM_FREQ>=63)&&(DRAM_FREQ<=124))   //&&(DRAM_FREQ<=166)
+    {
+     LCD_RegisterWrite(0x07,0x04);    //PLL Divided by 4
+     LCD_RegisterWrite(0x08,(DRAM_FREQ*4/OSC_FREQ)-1);
+    }
+    if((DRAM_FREQ>=31)&&(DRAM_FREQ<=62))
+    {
+     LCD_RegisterWrite(0x07,0x06);    //PLL Divided by 8
+     LCD_RegisterWrite(0x08,(DRAM_FREQ*8/OSC_FREQ)-1);
+    }
+    if(DRAM_FREQ<=30)
+    {
+     LCD_RegisterWrite(0x07,0x06);    //PLL Divided by 8
+     LCD_RegisterWrite(0x08,(30*8/OSC_FREQ)-1); //
+    }
+   
+
+    // Set Core clock
+    if(CORE_FREQ>=125)
+    {
+     LCD_RegisterWrite(0x09,0x02);    //PLL Divided by 2
+     LCD_RegisterWrite(0x0A,(CORE_FREQ*2/OSC_FREQ)-1);
+    }
+    if((CORE_FREQ>=63)&&(CORE_FREQ<=124))
+    {
+     LCD_RegisterWrite(0x09,0x04);    //PLL Divided by 4
+     LCD_RegisterWrite(0x0A,(CORE_FREQ*4/OSC_FREQ)-1);
+    }
+    if((CORE_FREQ>=31)&&(CORE_FREQ<=62))
+    {
+     LCD_RegisterWrite(0x09,0x06);    //PLL Divided by 8
+     LCD_RegisterWrite(0x0A,(CORE_FREQ*8/OSC_FREQ)-1);
+    }
+    if(CORE_FREQ<=30)
+    {
+     LCD_RegisterWrite(0x09,0x06);    //PLL Divided by 8
+     LCD_RegisterWrite(0x0A,((30 * 8) / OSC_FREQ) - 1); //
+    }
+
+      LCD_CmdWrite(0x01);
+      LCD_DataWrite(0x00);
+      delayMicroseconds(10);
+      LCD_DataWrite(0x80);
+      //Enable_PLL();
+#else
+    // Old version
     uint16_t plldivn_sclk, plldivn_cclk, plldivn_mclk;
     uint16_t plldivk_sclk, plldivk_cclk, plldivk_mclk;
     uint16_t plldivk_sclkpow, plldivk_cclkpow, plldivk_mclkpow;
@@ -802,6 +884,7 @@ void ER_TFTM0784::RA8876_PLL_Initial()
     delayMicroseconds(10);
     LCD_DataWrite(0x80);
     //Enable_PLL();
+#endif
     
     delay(10); //µ¥PLLÃ­©w
 }
@@ -7458,6 +7541,24 @@ void ER_TFTM0784::Show_picture(uint32_t numbers, const uint16_t *datap)
       }
     }
     
+}
+
+void ER_TFTM0784::Read_picture(uint32_t numbers, uint8_t *datap)
+{
+    uint32_t i;
+    
+    LCD_CmdWrite(0x04);
+    if (mode_8876 == 2) // Check if we are using SPI
+    { // Then increase efficiency by sending the data in one burst!
+        // b0 = 0b10000000
+        // b1   reg_dat / mem_dat
+        startSend();
+        SPI.transfer(RA8876_SPI_DATAREAD);
+        for (i = 0; i < numbers; i++) {
+            *datap++ = SPI.transfer(0);
+        }
+        endSend();
+    }
 }
 
 void ER_TFTM0784::Show_picture(uint32_t numbers, const uint8_t *datap)
