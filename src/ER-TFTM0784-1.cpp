@@ -16,7 +16,6 @@
 // Ported to Arduino by Craig Iannello  2020-04-14
 //
 ///////////////////////////////////////////////////////////////////////////////
-#define USE_NEW_INITIAL_DATA
 
 #include "ER-TFTM0784-1.h"
 
@@ -679,215 +678,85 @@ void ER_TFTM0784::RA8876_initial()
 //==============================================================================
 void ER_TFTM0784::RA8876_PLL_Initial()
 {
-#ifdef USE_NEW_INITIAL_DATA
-    if(SCAN_FREQ>=63)        //&&(SCAN_FREQ<=100))
+    if (SCAN_FREQ >= 63) //&&(SCAN_FREQ<=100))
     {
-     LCD_RegisterWrite(0x05,0x04);    //PLL Divided by 4
-     LCD_RegisterWrite(0x06,(SCAN_FREQ*4/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x05, 0x04); // PLL Divided by 4
+        LCD_RegisterWrite(0x06, (SCAN_FREQ * 4 / OSC_FREQ) - 1);
     }
-    if((SCAN_FREQ>=32)&&(SCAN_FREQ<=62))
+    if ((SCAN_FREQ >= 32) && (SCAN_FREQ <= 62))
     {
-     LCD_RegisterWrite(0x05,0x06);    //PLL Divided by 8
-     LCD_RegisterWrite(0x06,(SCAN_FREQ*8/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x05, 0x06); // PLL Divided by 8
+        LCD_RegisterWrite(0x06, (SCAN_FREQ * 8 / OSC_FREQ) - 1);
     }
-    if((SCAN_FREQ>=16)&&(SCAN_FREQ<=31))
+    if ((SCAN_FREQ >= 16) && (SCAN_FREQ <= 31))
     {
-     LCD_RegisterWrite(0x05,0x16);    //PLL Divided by 16
-     LCD_RegisterWrite(0x06,(SCAN_FREQ*16/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x05, 0x16); // PLL Divided by 16
+        LCD_RegisterWrite(0x06, (SCAN_FREQ * 16 / OSC_FREQ) - 1);
     }
-    if((SCAN_FREQ>=8)&&(SCAN_FREQ<=15))
+    if ((SCAN_FREQ >= 8) && (SCAN_FREQ <= 15))
     {
-     LCD_RegisterWrite(0x05,0x26);    //PLL Divided by 32
-     LCD_RegisterWrite(0x06,(SCAN_FREQ*32/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x05, 0x26); // PLL Divided by 32
+        LCD_RegisterWrite(0x06, (SCAN_FREQ * 32 / OSC_FREQ) - 1);
     }
-    if((SCAN_FREQ>0)&&(SCAN_FREQ<=7))
+    if ((SCAN_FREQ > 0) && (SCAN_FREQ <= 7))
     {
-     LCD_RegisterWrite(0x05,0x36);    //PLL Divided by 64
-     LCD_RegisterWrite(0x06,(SCAN_FREQ*64/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x05, 0x36); // PLL Divided by 64
+        LCD_RegisterWrite(0x06, (uint8_t)((SCAN_FREQ * 64 / OSC_FREQ) - 1));
     }
-   
-    
+
     // Set SDRAM clock
-    if(DRAM_FREQ>=125)        //&&(DRAM_FREQ<=166))
+    if (DRAM_FREQ >= 125) //&&(DRAM_FREQ <= 166))
     {
-     LCD_RegisterWrite(0x07,0x02);    //PLL Divided by 2
-     LCD_RegisterWrite(0x08,(DRAM_FREQ*2/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x07, 0x02); // PLL Divided by 2
+        LCD_RegisterWrite(0x08, (DRAM_FREQ * 2 / OSC_FREQ) - 1);
     }
-    if((DRAM_FREQ>=63)&&(DRAM_FREQ<=124))   //&&(DRAM_FREQ<=166)
+    if ((DRAM_FREQ >= 63) && (DRAM_FREQ <= 124)) //&&(DRAM_FREQ<=166)
     {
-     LCD_RegisterWrite(0x07,0x04);    //PLL Divided by 4
-     LCD_RegisterWrite(0x08,(DRAM_FREQ*4/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x07, 0x04); // PLL Divided by 4
+        LCD_RegisterWrite(0x08, (DRAM_FREQ * 4 / OSC_FREQ) - 1);
     }
-    if((DRAM_FREQ>=31)&&(DRAM_FREQ<=62))
+    if ((DRAM_FREQ >= 31) && (DRAM_FREQ <= 62))
     {
-     LCD_RegisterWrite(0x07,0x06);    //PLL Divided by 8
-     LCD_RegisterWrite(0x08,(DRAM_FREQ*8/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x07, 0x06); // PLL Divided by 8
+        LCD_RegisterWrite(0x08, (DRAM_FREQ * 8 / OSC_FREQ) - 1);
     }
-    if(DRAM_FREQ<=30)
+    if (DRAM_FREQ <= 30)
     {
-     LCD_RegisterWrite(0x07,0x06);    //PLL Divided by 8
-     LCD_RegisterWrite(0x08,(30*8/OSC_FREQ)-1); //
+        LCD_RegisterWrite(0x07, 0x06); // PLL Divided by 8
+        LCD_RegisterWrite(0x08, (30 * 8 / OSC_FREQ) - 1); //
     }
-   
 
     // Set Core clock
-    if(CORE_FREQ>=125)
+    if (CORE_FREQ >= 125)
     {
-     LCD_RegisterWrite(0x09,0x02);    //PLL Divided by 2
-     LCD_RegisterWrite(0x0A,(CORE_FREQ*2/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x09, 0x02); // PLL Divided by 2
+        LCD_RegisterWrite(0x0A, (CORE_FREQ * 2 / OSC_FREQ) - 1);
     }
-    if((CORE_FREQ>=63)&&(CORE_FREQ<=124))
+    if ((CORE_FREQ >= 63) && (CORE_FREQ <= 124))
     {
-     LCD_RegisterWrite(0x09,0x04);    //PLL Divided by 4
-     LCD_RegisterWrite(0x0A,(CORE_FREQ*4/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x09, 0x04); // PLL Divided by 4
+        LCD_RegisterWrite(0x0A, (CORE_FREQ * 4 / OSC_FREQ) - 1);
     }
-    if((CORE_FREQ>=31)&&(CORE_FREQ<=62))
+    if ((CORE_FREQ >= 31) && (CORE_FREQ <= 62))
     {
-     LCD_RegisterWrite(0x09,0x06);    //PLL Divided by 8
-     LCD_RegisterWrite(0x0A,(CORE_FREQ*8/OSC_FREQ)-1);
+        LCD_RegisterWrite(0x09, 0x06); // PLL Divided by 8
+        LCD_RegisterWrite(0x0A, (CORE_FREQ * 8 / OSC_FREQ) - 1);
     }
-    if(CORE_FREQ<=30)
+    if (CORE_FREQ <= 30)
     {
-     LCD_RegisterWrite(0x09,0x06);    //PLL Divided by 8
-     LCD_RegisterWrite(0x0A,((30 * 8) / OSC_FREQ) - 1); //
+        LCD_RegisterWrite(0x09, 0x06); // PLL Divided by 8
+        LCD_RegisterWrite(0x0A, ((30 * 8) / OSC_FREQ) - 1); //
     }
 
-      LCD_CmdWrite(0x01);
-      LCD_DataWrite(0x00);
-      delayMicroseconds(10);
-      LCD_DataWrite(0x80);
-      //Enable_PLL();
-#else
-    // Old version
-    uint16_t plldivn_sclk, plldivn_cclk, plldivn_mclk;
-    uint16_t plldivk_sclk, plldivk_cclk, plldivk_mclk;
-    uint16_t plldivk_sclkpow, plldivk_cclkpow, plldivk_mclkpow;
-    uint16_t temp_sclk, temp_cclk, temp_mclk;
-    uint16_t plldivm_sclk, plldivm_cclk, plldivm_mclk = 0;
-    
-    //=====[05h] b3-b1
-#ifdef SCAN_DIVK1           // 000
-    plldivk_sclk = 0;
-    plldivk_sclkpow = 1;
-#endif
-#ifdef SCAN_DIVK2     // 001
-    plldivk_sclk = 1;
-    plldivk_sclkpow = 2;
-#endif
-#ifdef SCAN_DIVK4       // 010
-    plldivk_sclk = 2;
-    plldivk_sclkpow = 4;
-#endif
-#ifdef SCAN_DIVK8       // 011
-    plldivk_sclk = 3;
-    plldivk_sclkpow = 8;
-#endif
-#ifdef SCAN_DIVK16      // 100
-    plldivk_sclk = 4;
-    plldivk_sclkpow = 16;
-#endif
-#ifdef SCAN_DIVK32      // 101
-    plldivk_sclk = 5;
-    plldivk_sclkpow = 32;
-#endif
-#ifdef SCAN_DIVK64      // 110
-    plldivk_sclk = 6;
-    plldivk_sclkpow = 64;
-#endif
-#ifdef SCAN_DIVK128     // 111
-    plldivk_sclk = 7;
-    plldivk_sclkpow = 128;
-#endif
-    //=====[05h] b0
-#ifdef SCAN_DIVM1       // 0
-    plldivm_sclk = 0;
-#endif
-#ifdef SCAN_DIVM2       // 1
-    plldivm_sclk = 1;
-#endif
-    //=====[07h] b3-b1
-#ifdef DRAM_DIVK1       // 000
-    plldivk_mclk = 0;
-    plldivk_mclkpow = 1;
-#endif
-#ifdef DRAM_DIVK2     // 001
-    plldivk_mclk = 1;
-    plldivk_mclkpow = 2;
-#endif
-#ifdef DRAM_DIVK4       // 010
-    plldivk_mclk = 2;
-    plldivk_mclkpow = 4;
-#endif
-#ifdef DRAM_DIVK8       // 011
-    plldivk_mclk = 3;
-    plldivk_mclkpow = 8;
-#endif
-    //=====[07h] b0
-#ifdef DRAM_DIVM1       // 0
-    plldivm_mclk = 0;
-#endif
-#ifdef DRAM_DIVM2     // 1
-    plldivm_mclk = 1;
-#endif
-    //=====[09h] b3-b1
-#ifdef CORE_DIVK1       // 000
-    plldivk_cclk = 0;
-    plldivk_cclkpow = 1;
-#endif
-#ifdef CORE_DIVK2     // 001
-    plldivk_cclk = 1;
-    plldivk_cclkpow = 2;
-#endif
-#ifdef CORE_DIVK4       // 010
-    plldivk_cclk = 2;
-    plldivk_cclkpow = 4;
-#endif
-#ifdef CORE_DIVK8       // 011
-    plldivk_cclk = 3;
-    plldivk_cclkpow = 8;
-#endif
-    //=====[09h] b0
-#ifdef CORE_DIVM1       // 0
-    plldivm_cclk = 0;
-#endif
-#ifdef CORE_DIVM2     // 1
-    plldivm_cclk = 1;
-#endif
-    
-    // PLL = FIN*(PLLDIVN+1) / (PLLDIVM+1) * (2^PLLDIVK)
-    // PLLDIVN = [(PLL * (PLLDIVM+1) * (2^PLLDIVK)) / FIN ] - 1
-    plldivn_sclk = ((SCAN_FREQ * (plldivm_sclk + 1) * plldivk_sclkpow) / OSC_FREQ) - 1;
-    plldivn_mclk = ((DRAM_FREQ * (plldivm_mclk + 1) * plldivk_mclkpow) / OSC_FREQ) - 1;
-    plldivn_cclk = ((CORE_FREQ * (plldivm_cclk + 1) * plldivk_cclkpow) / OSC_FREQ) - 1;
-    
-    temp_sclk = (plldivk_sclk << 1) | plldivm_sclk;
-    temp_mclk = (plldivk_mclk << 1) | plldivm_mclk;
-    temp_cclk = (plldivk_cclk << 1) | plldivm_cclk;
-    
-    
-    LCD_CmdWrite(0x05);
-    LCD_DataWrite(temp_sclk);
-    LCD_CmdWrite(0x07);
-    LCD_DataWrite(temp_mclk);
-    LCD_CmdWrite(0x09);
-    LCD_DataWrite(temp_cclk);
-    
-    LCD_CmdWrite(0x06);
-    LCD_DataWrite(plldivn_sclk);
-    LCD_CmdWrite(0x08);
-    LCD_DataWrite(plldivn_mclk);
-    LCD_CmdWrite(0x0a);
-    LCD_DataWrite(plldivn_cclk);
-    
     LCD_CmdWrite(0x01);
     LCD_DataWrite(0x00);
     delayMicroseconds(10);
     LCD_DataWrite(0x80);
-    //Enable_PLL();
-#endif
-    
-    delay(10); //µ¥PLLÃ­©w
+    // Enable_PLL();
+
+    delay(10); // µ¥PLLÃ­©w
 }
+
 
 
 
