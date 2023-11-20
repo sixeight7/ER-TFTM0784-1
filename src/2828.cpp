@@ -477,19 +477,19 @@ void SSD2828::Initial(void) {
     SPI_WriteData(0x23);  // p1: HS-Data-zero  p2: HS-Data- prepare  --> 8031 issue
     delay(100);
 
-    SPI_WriteCmd(0xCA);
+    SPI_WriteCmd(DELAY_ADJUSTMENT_REGISTER_2);
     SPI_WriteData(0x01);  // CLK Prepare
     SPI_WriteData(0x23);  // Clk Zero
 
-    SPI_WriteCmd(0xCB);  // local_write_reg(addr=0xCB,data=0x0510)
+    SPI_WriteCmd(DELAY_ADJUSTMENT_REGISTER_3);  // local_write_reg(addr=0xCB,data=0x0510)
     SPI_WriteData(0x10);  // Clk Post
     SPI_WriteData(0x05);  // Clk Per
 
-    SPI_WriteCmd(0xCC);  // local_write_reg(addr=0xCC,data=0x100A)
+    SPI_WriteCmd(DELAY_ADJUSTMENT_REGISTER_4);  // local_write_reg(addr=0xCC,data=0x100A)
     SPI_WriteData(0x05);  // HS Trail
     SPI_WriteData(0x10);  // Clk Trail
 
-    SPI_WriteCmd(0xD0);
+    SPI_WriteCmd(HS_TX_TIMER_REGISTER_2);
     SPI_WriteData(0x00);
     SPI_WriteData(0x00);
 
