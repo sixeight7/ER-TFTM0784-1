@@ -10,7 +10,7 @@
 //----------------------------//
 
 /*==== [HW_(3)]  SDRAM  =====*/
-#define W25Q128FVSG // This is the new type
+#define W25Q128FVSG
 //#define IS42SM16160D
 //#define IS42S16320B
 //#define IS42S16400F
@@ -1339,7 +1339,6 @@ public:
     
     void Show_String(const char *str);
     void Show_picture(uint32_t numbers, const uint16_t *datap);
-    void Read_picture(uint32_t numbers, uint8_t *datap);
     void Show_picture(uint32_t numbers, const uint8_t *datap);
     void LCD_Clear(uint16_t Color);
     void LCD_SetCursor(uint16_t Xpos, uint16_t Ypos);

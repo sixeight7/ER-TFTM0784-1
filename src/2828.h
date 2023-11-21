@@ -41,7 +41,7 @@
 #define TE_STATUS_REGISTER 0xD3
 #define SPI_READ_REGISTER 0xD4
 #define PLL_LOCK_REGISTER 0xD5
-#define TEST_REGISTER 0xD6
+#define RGB_CONTROL_REGISTER 0xD6
 #define TE_COUNT_REGISTER 0xD7
 #define ANALOG_CONTROL_REGISTER_1 0xD8
 #define ANALOG_CONTROL_REGISTER_2 0xD9
@@ -82,7 +82,6 @@ class SSD2828 {
 public:
     SSD2828(uint8_t sdi_pin, uint8_t sclk_pin, uint8_t cs_pin, uint8_t rst_pin);
     void Reset(void);
-    void LCD_Initial(void);
     void Initial(void);
 
 private:
@@ -91,6 +90,7 @@ private:
     uint8_t SPI_ReadData(void);
     void SPI_WriteData(uint8_t value);
     void SPI_WriteCmd(uint8_t value);
+    void SendCmd(uint8_t cmd, uint8_t data1, uint8_t data2);
     void GP_COMMAD_PA(uint16_t num);
     void spi_delay(void);
 
