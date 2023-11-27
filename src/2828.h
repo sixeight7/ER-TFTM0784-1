@@ -91,6 +91,7 @@ private:
     void SPI_WriteData(uint8_t value);
     void SPI_WriteCmd(uint8_t value);
     void SendCmd(uint8_t cmd, uint8_t data1, uint8_t data2);
+    void WriteDataPacket(uint16_t num, ...);
     void GP_COMMAD_PA(uint16_t num);
     void spi_delay(void);
 
